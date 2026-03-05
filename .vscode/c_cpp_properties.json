@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "name": "AVR",
+            "intelliSenseMode": "${default}",
+            "compilerPath": "/opt/avr8-gnu-toolchain-linux_x86_64/bin/avr-gcc",
+            "cStandard": "c23",
+            "cppStandard": "${default}",
+            "includePath": [],
+            "compilerArgs": [
+                "-g",
+                "-Os",
+                "-Wall",
+                "-Wextra",
+                "-fpermissive",
+                "-fno-exceptions",
+                "-ffunction-sections",
+                "-fdata-sections",
+                "-pipe",
+                "-DUART_TX_PIN=PB1",
+                "-DUART_RX_PIN=PB1",
+                "-mmcu=attiny10",
+                "-DF_CPU=1000000UL"
+            ]
+        }
+    ],
+    "version": 4
+}

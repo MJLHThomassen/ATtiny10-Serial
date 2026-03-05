@@ -1,0 +1,20 @@
+{
+	"name": "AVR Development Evironment",
+	"build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-extension-pack",
+                "alex079.vscode-avr-helper",
+                "rockcat.avr-support"
+            ]
+        }
+    },
+    // Priviledged, pid and root required for running avrdude and connecting to usb device
+    "privileged": true,
+    "runArgs": ["--pid=host"],
+    "remoteUser": "root"
+}
