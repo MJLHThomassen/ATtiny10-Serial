@@ -3,7 +3,7 @@
         {
             "name": "AVR",
             "intelliSenseMode": "${default}",
-            "compilerPath": "/opt/avr8-gnu-toolchain-linux_x86_64/bin/avr-gcc",
+            "compilerPath": "F:\\Code\\AVR\\Toolchains\\avr-gcc-15.2.0-x64-windows\\bin\\avr-gcc.exe",
             "cStandard": "c23",
             "cppStandard": "${default}",
             "includePath": [],
@@ -17,8 +17,6 @@
                 "-ffunction-sections",
                 "-fdata-sections",
                 "-pipe",
-                "-DUART_TX_PIN=PB1",
-                "-DUART_RX_PIN=PB1",
                 "-mmcu=attiny10",
                 "-DF_CPU=1000000UL"
             ]

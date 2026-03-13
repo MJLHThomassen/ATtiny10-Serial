@@ -6,9 +6,6 @@
     "AVR.device.frequency": 1000000,
     "AVR.programmer.type": "avrispmkii",
     "AVR.compiler.C standard": "c23",
-    "AVR.source.compiler": "/opt/avr8-gnu-toolchain-linux_x86_64/bin/avr-gcc",
-    "AVR.source.libraries": [],
-    "AVR.programmer.tool": "/usr/bin/avrdude",
     "AVR.compiler.arguments": [
         "-g",
         "-Os",
@@ -18,8 +15,6 @@
         "-fno-exceptions",
         "-ffunction-sections",
         "-fdata-sections",
-        "-pipe",
-        "-DUART_TX_PIN=PB1",
-        "-DUART_RX_PIN=PB1"
+        "-pipe"
     ]
 }

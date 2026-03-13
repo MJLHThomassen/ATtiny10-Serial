@@ -1,0 +1,16 @@
+{
+    "version": 10,
+    "cmakeMinimumRequired": {
+        "major": 4,
+        "minor": 2,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "default",
+            "toolchainFile": "../../cmake/toolchains/avr.cmake",
+            "description": "Default build using Ninja generator",
+            "generator": "Ninja"
+        }
+    ]
+}

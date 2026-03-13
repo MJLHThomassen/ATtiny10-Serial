@@ -11,6 +11,33 @@
 #include "led.h"
 #include "../../src/attiny10_serial.h"
 
+static volatile uint8_t rx_data = 0;
+static volatile bool rx_data_available = false;
+
+static void dbg_byte(uint8_t byte)
+{
+    DBG_ON();
+    DBG_OFF();
+
+    for (int j = 0; j < 8; ++j)
+    {
+        if (byte & 0x01)
+        {
+            DBG_ON();
+        }
+        else
+        {
+            DBG_OFF();
+        }
+
+        byte >>= 1;
+
+        _delay_us(10);
+
+        DBG_OFF();
+    }
+}
+
 static void setupPowerSaving()
 {
     ACSR = _BV(ACD);     // Disable Analog Comparator
@@ -37,19 +64,17 @@ static void setupIO()
 {
     PUEB &= ~_BV(LED_PIN); // Disable Pull-Up for the LED pin
     DDRB |= _BV(LED_PIN); // Set LED Pin as output
+
+    PUEB &= ~_BV(DBG_PIN); // Disable Pull-Up for the DBG pin
+    DDRB |= _BV(DBG_PIN); // Set DBG Pin as output
 }
 
 static void setup()
 {
-    cli();
-
     setupPowerSaving();
     setupClock();
     setupSleep();
     setupIO();
-    attiny10_serial_begin_tx();
-
-    sei();
 }
 
 // Resources:
@@ -60,15 +85,46 @@ static void setup()
 // - AVR Specifics: https://gcc.gnu.org/onlinedocs/gcc/Machine-Constraints.html (Search for "AVR family")
 // Inline Assembler Cookbook: https://www.nongnu.org/avr-libc/user-manual/inline_asm.html
 
+ISR(PCINT0_vec, ISR_NAKED)
+{
+    uint8_t data = attiny10_serial_read(UART1_RX_PIN);
+
+    rx_data = data;
+    rx_data_available = true;
+
+    // Clear Pin Change Interrupt Flag 0 so we don't fire another PCINT0_vect caused by the line toggeling during the byte we just received
+    PCIFR |= _BV(PCIF0);
+}
+
 int main(void)
 {
-    uint8_t j = 0;
+    uint8_t data = 0;
 
     setup();
-    LED_ON();
+
+    _delay_ms(1000);
+
+    attiny10_serial_begin_tx(PB1);
+    attiny10_serial_write(PB1, 0x55);
+    attiny10_serial_end_tx(PB1);
+
+    attiny10_serial_begin_rx(PB1);
+
+    // Enable global interrupts
+    sei();
 
     while (true)
     {
-        attiny10_serial_write(++j);
+        if(rx_data_available)
+        {
+            data = rx_data;
+            rx_data_available = false;
+
+            attiny10_serial_end_rx(PB1);
+            attiny10_serial_begin_tx(PB1);
+            attiny10_serial_write(PB1, ++data);
+            attiny10_serial_end_tx(PB1);
+            attiny10_serial_begin_rx(PB1);
+        }
     }
 }

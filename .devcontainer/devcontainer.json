@@ -10,7 +10,11 @@
                 "ms-vscode.cpptools-extension-pack",
                 "alex079.vscode-avr-helper",
                 "rockcat.avr-support"
-            ]
+            ],
+            "settings": {
+                "AVR.source.compiler": "/opt/avr8-gnu-toolchain-linux_x86_64/bin/avr-gcc",
+                "AVR.programmer.tool": "/usr/bin/avrdude"
+            }
         }
     },
     // Priviledged, pid and root required for running avrdude and connecting to usb device
